@@ -1,27 +1,20 @@
 const express = require('express');
 const path = require('path');
-const store = require('./store/datastore');
-const initialStoreData = require('./store/data');
-const Musician = require('./models/musician');
-const musicianRoutes = require('./routes/musician');
 
 const app = express();
 const port = process.env.PORT || 3001;
 
 // include routes
-app.use('/musician', musicianRoutes);
+var coreAppRoutes = require('./_coreApplication/routes/index');
+coreAppRoutes(app); //register the core app api
+
+var mobileAppRoutes = require('./_mobileApplication/routes/index');
+mobileAppRoutes(app); //register the mobile app api
+
+var webAppRoutes = require('./_webApplication/routes/index');
+webAppRoutes(app); //register the web app api
 
 app.use(express.static('public'));
-
-// Index route
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'client/build/index.html'));
-});
-
-// initialize store
-const musician = new Musician(store);
-musician.initStore(initialStoreData);
-app.locals.musician = musician;
 
 // start server
 const server = app.listen(port, () => {
