@@ -1,5 +1,3 @@
-'user strict';
-
 //connect to mysqldatabase and  create tables that have not been created
 var conn_sql = require("../../config/connectDatabaseMysql");
 
